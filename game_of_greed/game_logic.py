@@ -41,26 +41,34 @@ class GameLogic:
             i = 1
 
             for no in occurance:
+                # Check if one has three occurrences
                 if i == 1 and no == 3:
                     total = total + 1000
                     roll = list(filter(lambda num: num != i, roll))
+                # Check if one has four occurrences
                 elif i == 1 and no == 4:
                     total = total + 2000
                     roll = list(filter(lambda num: num != i, roll))
+                # Check if one has five occurrences
                 elif i == 1 and no == 5:
                     total = total + 3000
                     roll = list(filter(lambda num: num != i, roll))
+                # Check if one has six occurrences
                 elif i == 1 and no == 6:
                     return 4000
+                # Check if any other number has three occurrences
                 elif no == 3:
                     total = total + i * 100
                     roll = list(filter(lambda num: num != i, roll))
+                # Check if any other number has four occurrences
                 elif no == 4:
                     total = total + i * 200
                     roll = list(filter(lambda num: num != i, roll))
+                # Check if any other number has five occurrences
                 elif no == 5:
                     total = total + i * 300
                     roll = list(filter(lambda num: num != i, roll))
+                # Check if any other number has six occurrences
                 elif no == 6:
                     return i * 400
 
