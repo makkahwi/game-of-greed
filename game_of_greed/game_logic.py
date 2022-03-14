@@ -1,9 +1,16 @@
+import random
 
 class GameLogic:
     def __init__(self):
         pass
 
     def calculate_score(roll):
+        """
+        A method that returns the roll's score based on the rules of the game.
+        INPUT: Tuple of integers that represent a dice roll
+        OUTPUT: Integer representing the roll's score
+        """
+        
         occurance = []
         threes = []
 
@@ -59,9 +66,21 @@ class GameLogic:
         else:
             return 0
 
+    @staticmethod
     def roll_dice(dices):
-        pass
+        """
+        A method that returns a tuple of integers representing the dice roll
+        INPUT: Integer between 1 and 6
+        OUTPUT: Tuple of random values between 1 and 6
+        """
+        random_list_values = []
+        for _ in range(1,dices+1):
+            random_int = random.randint(1,dices)
+            random_list_values.append(random_int)
 
+        random_values = tuple(random_list_values)
+
+        return random_values
 
 class Banker:
   '''
@@ -97,6 +116,3 @@ class Banker:
     clear_shelf method remove all unbanked points.
     '''
     self.shelved = 0
-
-
-    
