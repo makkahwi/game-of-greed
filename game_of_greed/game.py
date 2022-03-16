@@ -1,3 +1,7 @@
+from game_of_greed.banker import Banker
+from game_of_greed.game_logic import GameLogic
+
+
 class Game:
     def __init__(self, roller=None):
         self.roller = roller
@@ -47,7 +51,5 @@ class Game:
 
 
 if __name__ == "__main__":
-    from game_logic import GameLogic, Banker
-
     game = Game(GameLogic.roll_dice)
     game.play()
