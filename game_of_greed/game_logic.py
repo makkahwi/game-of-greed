@@ -4,7 +4,7 @@ import random
 class GameLogic:
     def __init__(self):
         pass
-
+    @staticmethod
     def calculate_score(input):
         """
         A method that returns the roll's score based on the rules of the game.
@@ -105,7 +105,7 @@ class Banker:
     three methods shelf , bank , clear_shelf
     """
 
-    def __init__(self, balance=0, shelved=0):
+    def __init__(self):
         self.balance = 0
         self.shelved = 0
 
@@ -115,7 +115,9 @@ class Banker:
         Input : the amount of points (integer) to add to shelf.
         shelf temporarily store unbanked points
         """
+
         self.shelved += temPoint
+        return self.shelved
 
     def bank(self):
         """
