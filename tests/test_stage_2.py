@@ -15,3 +15,7 @@ def test_bank_one_roll_then_quit():
 
 def bank_first_for_two_rounds_then_quit():
     Flo.test("../tests/flow/bank_first_for_two_rounds.sim.txt")
+
+
+def test_hot_dice():
+    Flo.test("../tests/flow/hot_dice.sim.txt")
