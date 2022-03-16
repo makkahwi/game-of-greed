@@ -6,7 +6,6 @@ class Game:
     def __init__(self, roller=None):
         self.roller = roller
         self.banker = Banker()
-        self.game_logic = GameLogic()
 
     def play(self):
         print("Welcome to Game of Greed")
@@ -32,7 +31,7 @@ class Game:
                     break
                 else:
                     decisionList = list(map(int, str(decision)))
-                    unpacked = self.game_logic.calculate_score(decisionList)
+                    unpacked = GameLogic.calculate_score(decisionList)
                     shelf = self.banker.shelf(unpacked)
                     banked = self.banker.bank()
                     print(
