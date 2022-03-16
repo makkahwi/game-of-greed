@@ -2,12 +2,12 @@
 
 ## Group Members
 
-- Amani Naeem Musallam
+- Amani Musallam
 - Faisal Al-Hawajreh
-- Raghad Ayman Abdulhadi
+- Raghad Abdulhadi
 - Suhaib Hasan Ahmed
 
-It's worth mentioning that Faisal was absent from lab time n didn't respond to any communication attempts to contribute to the work.
+It's worth mentioning that Faisal still absent since March 14th lab n didn't respond to any communication attempts to contribute to the work since.
 
 ### Game Objective
 
@@ -36,3 +36,7 @@ Players try to score 10000 points to win by randomly rolling 6 dices.
 - Dice Rolling
 - Score Calculation
 - Banking the Scores
+
+### Stage 2 Works
+
+- Code an interactive cli-based game to deal with given interaction cases
