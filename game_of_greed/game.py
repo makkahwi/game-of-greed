@@ -1,6 +1,7 @@
 
 
 from game_of_greed.game_logic import GameLogic
+
 from game_of_greed.game_logic import Banker
 
 
@@ -39,7 +40,7 @@ class Game:
                     print(f'You have {unpacked} unbanked points and {6-len(decisionList)} dice remaining')
                     decisionBankedPoint = input("(r)oll again, (b)ank your points or (q)uit ")
                     BankedPoint = newBank.bank()
-                    print(f'You banked {unpacked} points in round 1')
+                    print(f'You banked {unpacked} points in round {round}')
                     print(f'Total score is {newBank.balance} points')
                 round +=1
 
