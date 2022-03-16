@@ -23,11 +23,9 @@ class GameLogic:
             return 1500
 
         total = 0
-        occurance = []
 
         # This is to identify how many occurrences there are of each of the numbers ##############
-        for no in [1, 2, 3, 4, 5, 6]:
-            occurance.append(0)
+        occurance = [0, 0, 0, 0, 0, 0]
 
         for no in roll:
             occurance[no - 1] = int(occurance[no - 1]) + 1
@@ -97,5 +95,3 @@ class GameLogic:
         random_values = tuple(random_list_values)
 
         return random_values
-
-
