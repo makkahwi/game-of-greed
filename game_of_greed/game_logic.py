@@ -4,7 +4,6 @@ import random
 class GameLogic:
     def __init__(self):
         pass
-
     def calculate_score(input):
         """
         A method that returns the roll's score based on the rules of the game.
