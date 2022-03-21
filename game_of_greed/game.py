@@ -12,63 +12,52 @@ class Game:
         A method that interacts with user inputs. Limited to only given cases of user interaction.
         Soon to be enhanced to deal with more scenarios of user play inputs.
         """
-        # Welcoming #######################################################################
         print("Welcome to Game of Greed")
-        wanna_play = input("Wanna play? ")
-
-        # Wanna Play Cases ################################################################
-        if wanna_play == "n":
+        want_to_play = input("Wanna play? ")
+        if want_to_play == "n":
             print("OK. Maybe another time")
         else:
             round = 1
-            banked = self.banker.bank()
             print(f"Starting round {round}")
-
-            while round <= 6:
+            while True:
                 print("Rolling 6 dice...")
                 rolled_dice = self.roller(6)
                 nums = []
                 for i in rolled_dice:
                     nums.append(str(i))
                 print(",".join(nums))
-
-                # User Response to rolling result ##################################
-                decision = input("Enter dice to keep (no spaces), or (q)uit: ")
-
-                # Quit Case ########################################################
-                if decision == "q":
-                    if round > 1:
-                        print(f"Total score is {banked} points")
-                    print(f"Thanks for playing. You earned {banked} points")
+                first_decision = input("Enter dice to keep (no spaces), or (q)uit: ")
+                if first_decision == "q":
+                    total_score = self.banker.bank()
+                    if total_score != 0:
+                        print(f"Total score is {total_score} points")
+                        print(f"Thanks for playing. You earned {total_score} points")
+                    else:
+                        print(f"Thanks for playing. You earned {total_score} points")
                     break
-
-                # Putting a side dices case ########################################
                 else:
-                    decisionList = list(map(int, str(decision)))
-                    unpacked = GameLogic.calculate_score(decisionList)
-                    shelf = self.banker.shelf(unpacked)
-                    banked = self.banker.bank()
-
-                    # Roll, bank or quit cases #####################################
+                    decisionList = tuple(map(int, str(first_decision)))
+                    score = GameLogic.calculate_score(decisionList)
+                    unbanked_points = self.banker.shelf(score)
                     print(
-                        f"You have {banked} unbanked points and {6-len(decisionList)} dice remaining"
+                        f"You have {unbanked_points} unbanked points and {6 - len(decisionList)} dice remaining"
                     )
-                    decisionBankedPoint = input(
+                    second_decision = input(
                         "(r)oll again, (b)ank your points or (q)uit "
                     )
-
-                    # Bank case ####################################################
-                    if decisionBankedPoint == "b":
-                        print(f"You banked {banked} points in round {round}")
-                        print(f"Total score is {banked} points")
-                        print(f"Starting round {round + 1}")
-
-                    # Roll case ####################################################
-                    elif decisionBankedPoint == "r":
+                    if second_decision == "b":
+                        total_score = self.banker.bank()
+                        print(f"You banked {unbanked_points} points in round {round}")
+                        print(f"Total score is {total_score} points")
+                        round += 1
+                        print(f"Starting round {round}")
+                    else:
                         continue
-                round += 1
 
 
 if __name__ == "__main__":
+    from game_logic import GameLogic
+    from banker import Banker
+
     game = Game(GameLogic.roll_dice)
     game.play()
