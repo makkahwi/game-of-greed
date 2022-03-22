@@ -1,15 +1,13 @@
 from collections import Counter
 
-
 from game_of_greed.game_logic import GameLogic
-
-from game_of_greed.game_logic import Banker
+from game_of_greed.banker import Banker
 
 
 class Game:
-
-    def __init__(self, roller = None):
+    def __init__(self, roller=None):
         self.roller = roller
+
 
     def play(self):
         print("Welcome to Game of Greed")
