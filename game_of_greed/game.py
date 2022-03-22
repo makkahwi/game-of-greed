@@ -15,15 +15,17 @@ class Game:
         if wanna_play == "n":
             print("OK. Maybe another time")
         else:
+            Dices = 6
             round = 1
             rollagain = 0
             newBank = Banker()
             while (True):
                 if (rollagain == 0):
                     print(f'Starting round {round}')
-                print("Rolling 6 dice...")
+                    Dices = 6
+                print(f'Rolling {Dices} dice...')
                 # to print the Rolling dice
-                rolled_dice = self.roller(6)
+                rolled_dice = self.roller(Dices)
                 nums = []
                 for i in rolled_dice:
                     nums.append(str(i))
@@ -48,8 +50,10 @@ class Game:
                             decisionList = tuple(map(int, str(first_decision)))
                     unpacked = GameLogic.calculate_score(decisionList)
                     newBank.shelf(unpacked)
-                    print(f'You have {newBank.shelved} unbanked points and {6-len(decisionList)} dice remaining')
+                    Dices = Dices - len(decisionList)
+                    print(f'You have {newBank.shelved} unbanked points and {Dices} dice remaining')
                     decision = input("(r)oll again, (b)ank your points or (q)uit ")
+                    
 
                     # check for the bank decision 
                     if decision == "b":
@@ -59,6 +63,8 @@ class Game:
                         rollagain = 0
                     elif (decision =="r"):
                         rollagain = 1
+                        if (Dices == 0):
+                            Dices = 6
                         continue
 
                 # check forf the quitter decision 
