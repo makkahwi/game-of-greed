@@ -40,3 +40,14 @@ Players try to score 10000 points to win by randomly rolling 6 dices.
 ### Stage 2 Works
 
 - Code an interactive cli-based game to deal with given interaction cases
+
+### Stage 3 Works
+- Implement Zilch feature in game.py
+- Implement Cheat in game.py
+
+### Stage 4 Works
+**Adding an AI bot to play the game**
+
+- Based on the outputs we got from running the bots program, some changes were done in the game.py file.
+- Sonny Class has been added to the bots.py file which inherits from the BaseBot Class with two methods, the _roll_bank_or_quit and the _enter_dice which overrides the methods in the BaseBot Class.
+- _roll_bank_or_quit and the _enter_dice methods are implemented in a way that Sonny beats Nervous Nellie
