@@ -1,5 +1,4 @@
-"""
-Place in root of Game of Greed Project,
+"""Place in root of Game of Greed Project,
 at same level as pyproject.toml
 """
 
@@ -87,11 +86,11 @@ class BaseBot(ABC):
         """simulate user entering which dice to keep.
         Defaults to all scoring dice"""
 
-        roll = GameLogic.get_scorers(self.last_roll)
+        roll = str(GameLogic.get_scorers(self.last_roll))
 
         roll_string = ""
 
-        for value in self.last_roll:
+        for value in roll:
             roll_string += str(value)
 
         self.report("> " + roll_string)
