@@ -5,7 +5,7 @@ class GameLogic:
     def __init__(self):
         pass
 
-    def calculate_score(input, sec=False):
+    def get_scorers(input, sec=False):
         """
         A method that returns the roll's score based on the rules of the game.
         INPUT: Tuple of integers that represent a dice roll
@@ -95,4 +95,3 @@ class GameLogic:
         random_values = tuple(random_list_values)
 
         return random_values
-
