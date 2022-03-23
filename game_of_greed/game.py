@@ -1,63 +1,85 @@
-from game_of_greed.banker import Banker
+from collections import Counter
+
 from game_of_greed.game_logic import GameLogic
+from game_of_greed.banker import Banker
 
 
 class Game:
     def __init__(self, roller=None):
         self.roller = roller
-        self.banker = Banker()
+
 
     def play(self):
-        """
-        A method that interacts with user inputs. Limited to only given cases of user interaction.
-        Soon to be enhanced to deal with more scenarios of user play inputs.
-        """
         print("Welcome to Game of Greed")
-        want_to_play = input("Wanna play? ")
-        if want_to_play == "n":
+        wanna_play = input("Wanna play? ")
+        if wanna_play == "n":
             print("OK. Maybe another time")
         else:
+            Dices = 6
             round = 1
-            print(f"Starting round {round}")
-            while True:
-                print("Rolling 6 dice...")
-                rolled_dice = self.roller(6)
+            rollagain = 0
+            newBank = Banker()
+            while (True):
+                if (rollagain == 0):
+                    print(f'Starting round {round}')
+                    Dices = 6
+                print(f'Rolling {Dices} dice...')
+                # to print the Rolling dice
+                rolled_dice = self.roller(Dices)
                 nums = []
                 for i in rolled_dice:
                     nums.append(str(i))
-                print(",".join(nums))
-                first_decision = input("Enter dice to keep (no spaces), or (q)uit: ")
-                if first_decision == "q":
-                    total_score = self.banker.bank()
-                    if total_score != 0:
-                        print(f"Total score is {total_score} points")
-                        print(f"Thanks for playing. You earned {total_score} points")
-                    else:
-                        print(f"Thanks for playing. You earned {total_score} points")
+                print(','.join(nums))
+
+                # check for the Zilch Case 
+                if (GameLogic.calculate_score(rolled_dice) == 0):
+                    print("Zilch!!! Round over")
                     break
-                else:
-                    decisionList = tuple(map(int, str(first_decision)))
-                    score = GameLogic.calculate_score(decisionList)
-                    unbanked_points = self.banker.shelf(score)
-                    print(
-                        f"You have {unbanked_points} unbanked points and {6 - len(decisionList)} dice remaining"
-                    )
-                    second_decision = input(
-                        "(r)oll again, (b)ank your points or (q)uit "
-                    )
-                    if second_decision == "b":
-                        total_score = self.banker.bank()
-                        print(f"You banked {unbanked_points} points in round {round}")
-                        print(f"Total score is {total_score} points")
-                        round += 1
-                        print(f"Starting round {round}")
-                    else:
+                decision = input("Enter dice to keep (no spaces), or (q)uit: ")
+                if decision != "q": 
+                    decisionList = list(map(int, str(decision)))
+
+                    # check for the cheater or typo 
+                    ctr = Counter(rolled_dice)
+                    ctr2 = Counter(decisionList)
+                    for i in ctr2.keys():
+                        if (i not in ctr.keys()) or (ctr2[i] > ctr[i]) :
+                            print("Cheater!!! Or possibly made a typo...")
+                            print(",".join(nums))
+                            first_decision = input("Enter dice to keep (no spaces), or (q)uit: ")
+                            decisionList = tuple(map(int, str(first_decision)))
+                    unpacked = GameLogic.calculate_score(decisionList)
+                    newBank.shelf(unpacked)
+                    Dices = Dices - len(decisionList)
+                    print(f'You have {newBank.shelved} unbanked points and {Dices} dice remaining')
+                    decision = input("(r)oll again, (b)ank your points or (q)uit ")
+                    
+
+                    # check for the bank decision 
+                    if decision == "b":
+                        print(f'You banked {newBank.shelved} points in round {round}')
+                        newBank.bank() 
+                        print(f'Total score is {newBank.balance} points')
+                        rollagain = 0
+                    elif (decision =="r"):
+                        rollagain = 1
+                        if (Dices == 0):
+                            Dices = 6
                         continue
+
+                # check forf the quitter decision 
+                if (decision  == "q"):
+                    if (round > 1 or newBank.shelved !=0 ) :
+                        print(f'Total score is {newBank.balance} points')
+                    print(f'Thanks for playing. You earned {newBank.balance} points')
+                    break
+                round +=1
+
+                
+                 
 
 
 if __name__ == "__main__":
-    from game_logic import GameLogic
-    from banker import Banker
-
+    
     game = Game(GameLogic.roll_dice)
     game.play()

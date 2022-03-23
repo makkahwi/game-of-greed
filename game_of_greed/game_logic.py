@@ -95,3 +95,4 @@ class GameLogic:
         random_values = tuple(random_list_values)
 
         return random_values
+
