@@ -5,8 +5,12 @@ from game_of_greed.banker import Banker
 
 
 class Game:
-    def __init__(self, roller=GameLogic.roll_dice):
-        self.roller = roller
+    def __init__(self, roller = None):
+        self.roller = roller or GameLogic.roll_dice
+        self.banker = Banker()
+        self.game_logic = GameLogic()
+        self.round = 0
+        self.total_score = 0
 
     def play(self):
         print("Welcome to Game of Greed")
@@ -17,12 +21,16 @@ class Game:
             print("OK. Maybe another time")
         else:
             Dices = 6
-            round = 1
+            self.round = 1
             rollagain = 0
-            newBank = Banker()
             while True:
+                # if self.round > 20:
+                #     return "q"
+                if self.total_score > 1000:
+                    return "q"
+
                 if rollagain == 0:
-                    print(f"Starting round {round}")
+                    print(f"Starting round {self.round}")
                     Dices = 6
                 print(f"Rolling {Dices} dice...")
                 # to print the Rolling dice
@@ -49,24 +57,24 @@ class Game:
                         if (i not in ctr.keys()) or (ctr2[i] > ctr[i]):
                             # print("Cheater!!! Or possibly made a typo...")
                             print("*** " + ",".join(nums))
-                            first_decision = input(
-                                "Enter dice to keep (no spaces), or (q)uit: "
-                            )
+                            print("Enter dice to keep, or (q)uit:")
+                            first_decision = input()
                             decisionList = tuple(map(int, str(first_decision)))
                     unpacked = str(GameLogic.get_scorers(decisionList))
-                    newBank.shelf(unpacked)
+                    self.banker.shelf(unpacked)
                     Dices = Dices - len(decisionList)
-                    print(
-                        f"You have {newBank.shelved} unbanked points and {Dices} dice remaining"
-                    )
+                    print(f"You have {self.banker.shelved} unbanked points and {Dices} dice remaining")
                     print("(r)oll again, (b)ank your points or (q)uit:")
                     decision = input()
 
                     # check for the bank decision
                     if decision == "b":
-                        print(f"You banked {newBank.shelved} points in round {round}")
-                        newBank.bank()
-                        print(f"Total score is {newBank.balance} points")
+                        print(f"You banked {self.banker.shelved} points in round {self.round}")
+                        self.banker.bank()
+                        self.total_score += int(self.banker.balance)
+                        print(f"Thanks for playing. You earned {self.total_score} points")
+                        print(f"Total score is {self.total_score} points")
+
                         rollagain = 0
                     elif decision == "r":
                         rollagain = 1
@@ -74,16 +82,17 @@ class Game:
                             Dices = 6
                         continue
 
-                # check forf the quitter decision
-                if decision == "q":
-                    if round > 1 or newBank.shelved != 0:
-                        print(f"Total score is {newBank.balance} points")
-                    print(f"Thanks for playing. You earned {newBank.balance} points")
-                    break
-                round += 1
+                    # check forf the quitter decision
+                    if decision == "q":
+                        if self.round > 1 or self.banker.shelved != 0:
+                            #print(f"Total score is {self.total_score} points")
+                            print(f"Thanks for playing. You earned {self.total_score} points")
+                        break
+                    self.round += 1
 
 
 if __name__ == "__main__":
-
+    from game_logic import GameLogic
+    from banker import Banker
     game = Game(GameLogic.roll_dice)
     game.play()

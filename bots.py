@@ -7,9 +7,11 @@ import builtins
 import re
 from game_of_greed.game import Game
 from game_of_greed.game_logic import GameLogic
+from collections import Counter
 
 
 class BaseBot(ABC):
+    ## No instances is created out of this class, only we inherit from it, from the child classes we create the instances
     """Base class for Game of Greed bots"""
 
     def __init__(self, print_all=False):
@@ -21,13 +23,14 @@ class BaseBot(ABC):
 
         self.real_print = print
         self.real_input = input
+        ## The actual print is replaced by the _mock_print
         builtins.print = self._mock_print
         builtins.input = self._mock_input
         self.total_score = 0
 
     def reset(self):
         """restores the real print and input builtin functions"""
-
+        
         builtins.print = self.real_print
         builtins.input = self.real_input
 
@@ -36,7 +39,9 @@ class BaseBot(ABC):
 
         if self.print_all:
             self.real_print(text)
+
         elif text.startswith("Thanks for playing."):
+            ## \D search for digits
             score = re.sub("\D", "", text)
             self.total_score += int(score)
 
@@ -55,7 +60,7 @@ class BaseBot(ABC):
             self.unbanked_points = int(re.sub("\D", "", unbanked_points_part))
 
             self.dice_remaining = int(re.sub("\D", "", dice_remaining_part))
-
+            
         elif line.startswith("*** "):
 
             self.last_roll = [int(ch) for ch in line if ch.isdigit()]
@@ -66,7 +71,7 @@ class BaseBot(ABC):
         self.report(*args, **kwargs)
 
     def _mock_input(self, *args, **kwargs):
-        """steps in front of the real builtin print function"""
+        """steps in front of the real builtin input function"""
 
         if self.last_print == "(y)es to play or (n)o to decline":
 
@@ -122,6 +127,7 @@ class BaseBot(ABC):
                 pass
 
             mega_total += player.total_score
+            
             player.reset()
 
         print(
@@ -139,13 +145,21 @@ class NervousNellie(BaseBot):
 class Sonny(BaseBot):
     def _roll_bank_or_quit(self):
         """your logic here"""
-        return "b"
+        if int(GameLogic.get_scorers(self.last_roll)) >= 50:
+            return "b" 
+        else: 
+            return "r"
 
     def _enter_dice(self):
         """simulate user entering which dice to keep.
         Defaults to all scoring dice"""
-
-        return super()._enter_dice()
+        roll = ""
+        for i in self.last_roll:
+            if self.last_roll.count(i) == 3:
+                roll += str(i*3)
+            if i == 5 and self.last_roll.count(i) > 1:
+                roll += str(i*self.last_roll.count(i))
+        return roll
 
 
 if __name__ == "__main__":
