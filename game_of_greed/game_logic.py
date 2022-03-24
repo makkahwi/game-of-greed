@@ -5,7 +5,7 @@ class GameLogic:
     def __init__(self):
         pass
 
-    def calculate_score(input, sec=False):
+    def get_scorers(input, sec=False):
         """
         A method that returns the roll's score based on the rules of the game.
         INPUT: Tuple of integers that represent a dice roll
@@ -28,7 +28,8 @@ class GameLogic:
         occurance = [0, 0, 0, 0, 0, 0]
 
         for no in roll:
-            occurance[no - 1] = int(occurance[no - 1]) + 1
+            if no <= 6:
+                occurance[no - 1] += 1
 
         # Check if the roll has 3 pairs ##########################################################
         if len(roll) == 6 and len(set(roll)) == 3 and set(occurance) == set([0, 2]):
@@ -95,4 +96,3 @@ class GameLogic:
         random_values = tuple(random_list_values)
 
         return random_values
-
